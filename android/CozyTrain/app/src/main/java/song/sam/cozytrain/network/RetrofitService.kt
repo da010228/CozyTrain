@@ -24,7 +24,6 @@ object RetrofitService {
 
     fun setAuthToken(accessToken: String) {
         authToken = accessToken
-        Log.d("ㅋㅋ 토큰 과연", "$accessToken 설정 완 ㅋㅋ")
         retrofit = null
     }
 
