@@ -10,7 +10,6 @@ class AuthInterceptor(private val accessToken: String) : Interceptor {
             .addHeader("Authorization", "Bearer $accessToken")
             .build()
 
-        Log.d("ㅋㅋ 토큰은", "$accessToken 임니다 ㅋㅋ ")
         return chain.proceed(request)
     }
 
