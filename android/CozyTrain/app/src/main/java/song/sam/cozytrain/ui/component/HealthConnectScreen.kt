@@ -86,18 +86,9 @@ fun DrawHealthConnectSubscreen(
         val sleepsessionVMD: ViewModelData<SleepSessionData> =
             sleepsessionViewModel.getViewModelData()
 
-        Log.d("걸음수 ㅋㅋ", "${stepVMD} ${stepVMD.data}")
-        Log.d("수면 단계 ㅋㅋ", "${sleepsessionVMD}   ${sleepsessionVMD.data}")
-
-        Log.d("성공", "인데 왜 화면이 안 뜨지")
-
         val steps = stepVMD.data[1].count.toInt()
         val sleepDuration = parseDuration(sleepsessionVMD.data[0].duration.toString())
         val sleepStages = convertSleepStageToSleepStages(sleepsessionVMD.data[0].stages)
-
-        for(data in stepVMD.data){
-            Log.d("걸음수", data.count.toInt().toString())
-        }
 
         val webViewState =
             rememberWebViewState(
@@ -207,24 +198,19 @@ fun postHealthData(
 
     /* Retrofit을 통한 수면 시간 저장 구현 */
     val requestParams = health
-
-    Log.d("요청 ㅋㅋ ", requestParams.toString())
-
     RetrofitService.instance.postHealthData(requestParams)
         .enqueue(object : retrofit2.Callback<HealthDataResponse> {
             override fun onResponse(
                 call: Call<HealthDataResponse>,
                 response: Response<HealthDataResponse>
             ) {
-                Log.d("ㅋㅋ 성공", response.toString())
-
                 CoroutineScope(Dispatchers.Default).launch {
                     userModelData.saveSubmissionDate(LocalDate.now().toString())
                 }
             }
 
             override fun onFailure(call: Call<HealthDataResponse>, t: Throwable) {
-                Log.d("ㅋㅋ 실패", t.message.toString())
+                Log.d("실패", t.message.toString())
             }
 
         })
@@ -235,7 +221,6 @@ class AndroidBridge(
 ) {
     @JavascriptInterface
     fun onLoginSuccess(accessToken: String) {
-        Log.d("ㅋㅋ 내가 만든 쿠키", "AccessToken: $accessToken")
         RetrofitService.setAuthToken(accessToken)
         onAuthTokenSet.invoke() // 토큰이 설정되면 실행되어야할 작업 호출
     }
